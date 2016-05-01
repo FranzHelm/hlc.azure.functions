@@ -1,4 +1,3 @@
-module.exports = A.myfunction;
 
 var A = (function () {
     function A() {
@@ -23,6 +22,9 @@ var A = (function () {
     return A;
 }());
 exports.A = A;
+
+
+module.exports = A.myfunction;
 
 
 //# sourceMappingURL=index.js.map
