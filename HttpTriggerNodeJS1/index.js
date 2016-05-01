@@ -1,5 +1,3 @@
-"use strict";
-
 module.exports = A.myfunction;
 
 var A = (function () {
