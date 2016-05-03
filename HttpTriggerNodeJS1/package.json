@@ -2,7 +2,7 @@
   "name": "hlc.azure.functions",
   "version": "1.0.0",
   "description": "",
-  "main": "script/index.js",
+  "main": "index.js",
   "dependencies": {
     "needle": "^1.0.0"
   },
