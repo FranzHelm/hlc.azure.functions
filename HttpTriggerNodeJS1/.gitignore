@@ -3,3 +3,4 @@ typings
 www
 dist
 .vscode
+node_modules
