@@ -1,9 +1,7 @@
-
 "use strict";
 var KeepAlive = (function () {
     function KeepAlive() {
     }
-    
     KeepAlive.prototype.ping = function (req) {
         if (this._context == null) {
             throw "_context is null";
@@ -12,7 +10,7 @@ var KeepAlive = (function () {
             throw "_arguments is null";
         }
         this._context.log("ping(req)");
-        return "ok";
+        return "OK";
     };
     KeepAlive.prototype.setContext = function (context) {
         this._context = context;
