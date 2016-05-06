@@ -1,0 +1,6 @@
+bower_components
+typings
+www
+dist
+.vscode
+node_modules
