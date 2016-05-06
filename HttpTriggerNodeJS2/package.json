@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "needle": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {
