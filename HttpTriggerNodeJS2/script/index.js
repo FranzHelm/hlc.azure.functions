@@ -1,5 +1,5 @@
 "use strict";
-var keepalive_1 = require("./tasks/keepalive");
+var keepalive_1 = require("../tasks/keepalive");
 var A = (function () {
     function A() {
     }
