@@ -1,33 +1,63 @@
-import {KeepAlive} from "./tasks/keepalive";
+import {KeepAlive, IKeepAliveInput, IKeepAliveOutput} from "./tasks/keepalive";
 
 
 export class A {
- static myfunction(context, req) {
-    context.log('Node.js HTTP trigger function processed a request. RequestUri=%s', req.originalUrl);
+    static myfunction(context, req) {
+        context.log('Node.js HTTP trigger function processed a request. RequestUri=%s', req.originalUrl);
+        
+        
+        
+        if (context == null) {
+            throw "context is null";
+        }
 
-    var keepAlive = new KeepAlive();
-    keepAlive.setContext(context);
-    keepAlive.setArguments(arguments);
-    context.res = keepAlive.ping(req);
+        if (arguments == null) {
+            throw "arguments are null";
+        }
 
-    // if (req.query.name || (req.body && req.body.name)) {
-    //     context.res = {
-    //         // status: 200, /* Defaults to 200 */
-    //         body: "Hello ABC " + (req.query.name || req.body.name)
-    //     };
-    // }
-    // else {
-    //     context.res = {
-    //         status: 400,
-    //         body: "Please pass a name on the query string or in the request body"
-    //     };
-    // }
-    
-    
+        var contextLog = context.log;
 
-    
-    context.done();
-};
+        var url: string = (req.query && req.query.name) ||
+            (req.body && req.body.name);
+            
+            
+            
+        
+
+        var keepAlive = new KeepAlive();
+        keepAlive.setLog(contextLog);
+        // keepAlive.setArguments(arguments);
+
+       
+        
+        let input = { url: url };
+
+        var ret = keepAlive.pingPromise(input).then(output => {
+            console.log("output: " + JSON.stringify(output, null, 2));
+
+
+
+            if (output.statusCode == 200) {
+                context.res = {
+                    // status: 200, /* Defaults to 200 */
+                    body: "OK"
+                };
+            }
+            else {
+                context.res = {
+                    status: 400,
+                    body: output.statusMessage
+                };
+            }
+
+
+            context.done();
+
+
+        });
+
+
+    };
 }
 
 

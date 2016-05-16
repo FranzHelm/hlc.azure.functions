@@ -5,16 +5,13 @@
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
   "installed": {
-    "node/node.d.ts": {
+    "request/request.d.ts": {
       "commit": "398bd742115e2b071ab3edf8b543b6df6fa62dc2"
-    },
-    "lodash/lodash.d.ts": {
-      "commit": "6052959591c9bc6f8463c58220965c7030ba934d"
     },
     "form-data/form-data.d.ts": {
       "commit": "398bd742115e2b071ab3edf8b543b6df6fa62dc2"
     },
-    "request/request.d.ts": {
+    "node/node.d.ts": {
       "commit": "398bd742115e2b071ab3edf8b543b6df6fa62dc2"
     }
   }
