@@ -22,14 +22,8 @@ class TestHttpTriggerNodeJS2 {
 
         try {
 
-
-
-
- var output = await keepAlive.pingAsync(input);
+            var output = await keepAlive.pingAsync(input);
             console.log("output: " + JSON.stringify(output, null, 2));
-
-
-
 
             if (output.statusCode == 200) {
                 context.res = {
@@ -44,18 +38,17 @@ class TestHttpTriggerNodeJS2 {
                 };
             }
 
-
         }
         catch (e) {
 
-                context.res = {
-                    status: 400,
-                    body: "Exception occurred " + e
-                };
+            context.res = {
+                status: 400,
+                body: "Exception occurred " + e
+            };
 
         }
 
-            context.done();
+        context.done();
 
 
 

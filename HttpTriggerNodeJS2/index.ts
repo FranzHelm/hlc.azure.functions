@@ -2,7 +2,7 @@ import {KeepAlive, IKeepAliveInput, IKeepAliveOutput} from "./tasks/keepalive";
 
 
 export class A {
-    static myfunction(context, req) {
+    static async myfunction(context, req) {
         context.log('Node.js HTTP trigger function processed a request. RequestUri=%s', req.originalUrl);
         
         
@@ -31,11 +31,12 @@ export class A {
        
         
         let input = { url: url };
+        
+        
+        try {
 
-        var ret = keepAlive.pingPromise(input).then(output => {
+            var output = await keepAlive.pingAsync(input);
             console.log("output: " + JSON.stringify(output, null, 2));
-
-
 
             if (output.statusCode == 200) {
                 context.res = {
@@ -50,11 +51,42 @@ export class A {
                 };
             }
 
+        }
+        catch (e) {
 
-            context.done();
+            context.res = {
+                status: 400,
+                body: "Exception occurred " + e
+            };
+
+        }
+
+        context.done();
 
 
-        });
+        // var ret = keepAlive.pingPromise(input).then(output => {
+        //     console.log("output: " + JSON.stringify(output, null, 2));
+
+
+
+        //     if (output.statusCode == 200) {
+        //         context.res = {
+        //             // status: 200, /* Defaults to 200 */
+        //             body: "OK"
+        //         };
+        //     }
+        //     else {
+        //         context.res = {
+        //             status: 400,
+        //             body: output.statusMessage
+        //         };
+        //     }
+
+
+        //     context.done();
+
+
+        // });
 
 
     };
