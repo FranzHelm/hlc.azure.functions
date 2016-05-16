@@ -1,16 +1,29 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator.throw(value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments)).next());
+    });
+};
 // import * as request from "request";
 const http = require("http");
 class KeepAlive {
     // async function main() {
     //  await pingAsync();
     // }
-    // public async pingAsync(inpput: any) {
-    //   console.log("pingAsync start");
-    //   await this.pingPromise();
-    //   console.log("pingAsync end");
-    // }
+    pingAsync(input) {
+        return __awaiter(this, void 0, Promise, function* () {
+            this._log("pingAsync start");
+            var output = yield this.pingPromise(input);
+            this._log("pingAsync end");
+            return output;
+        });
+    }
     pingPromise(input) {
+        this._log("pingPromise start");
+        let promise = null;
         if (input == null) {
             throw "input is null";
         }
@@ -24,29 +37,24 @@ class KeepAlive {
         if (url == null || url.length == 0) {
             throw "url is missing";
         }
-        // return new Promise<string>((resolve, _) =>
-        //     http.get({
-        //         hostname: 'www.orf.at',
-        //         port: 80,
-        //         path: '/',
-        //         agent: false  // create a new agent just for this one request
-        //     }, (res) => {
-        //         // Do stuff with response
-        //         console.log("pingPromise end");
-        //         resolve(res.statusMessage)
-        //     }));
-        return new Promise((resolve, _) => http.get(url, (res) => {
-            var output = {
-                statusCode: res.statusCode,
-                statusMessage: res.statusMessage
-            };
-            resolve(output);
-            console.log("pingPromise end");
-        }));
+        promise = new Promise((resolve, reject) => {
+            http.get(url, (res) => {
+                var output = {
+                    statusCode: res.statusCode,
+                    statusMessage: res.statusMessage
+                };
+                resolve(output);
+                this._log("pingPromise end");
+            }).on('error', (e) => {
+                this._log(`Error: ${e.message}`);
+                reject(e.message);
+            });
+        });
         // http.get(
         //     `${tcBaseUrl}token`,
         //     { username: tcUser, password: tcPassword, auth: "Basic" },
         //     (_, resp, __) => resolve(resp.body)));
+        return promise;
     }
     // public ping(req: any): any {
     //     if (this._context == null) {

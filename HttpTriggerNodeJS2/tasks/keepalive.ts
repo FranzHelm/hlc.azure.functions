@@ -14,11 +14,11 @@ import {IAzureFunctionContext, IAzureFunctionRequest} from "../../interfaces/iaz
 
 export interface IKeepAliveInput {
     url: string;
-} 
+}
 export interface IKeepAliveOutput {
     statusCode: number;
     statusMessage: string;
-} 
+}
 
 export class KeepAlive {
 
@@ -32,14 +32,18 @@ export class KeepAlive {
     //  await pingAsync();
     // }
 
-    // public async pingAsync(inpput: any) {
-    //   console.log("pingAsync start");
-    //   await this.pingPromise();
-    //   console.log("pingAsync end");
-    // }
+    public async pingAsync(input: IKeepAliveInput): Promise<IKeepAliveOutput> {
+        this._log("pingAsync start");
+        var output = await this.pingPromise(input);
+        this._log("pingAsync end");
+        return output;
+    }
 
     public pingPromise(input: IKeepAliveInput): Promise<IKeepAliveOutput> {
 
+        this._log("pingPromise start");
+
+        let promise = null;
 
         if (input == null) {
             throw "input is null";
@@ -53,43 +57,47 @@ export class KeepAlive {
 
         // var url: string = (req.query && req.query.name) ||
         //     (req.body && req.body.name);
-            
-            var url = input.url;
+
+        var url = input.url;
 
         if (url == null || url.length == 0) {
             throw "url is missing";
         }
 
-        // return new Promise<string>((resolve, _) =>
-        //     http.get({
-        //         hostname: 'www.orf.at',
-        //         port: 80,
-        //         path: '/',
-        //         agent: false  // create a new agent just for this one request
-        //     }, (res) => {
-        //         // Do stuff with response
-        //         console.log("pingPromise end");
-        //         resolve(res.statusMessage)
-        //     }));
 
 
-        return new Promise<IKeepAliveOutput>((resolve, _) =>
-            http.get(url, (res) => {
-                
-                var output : IKeepAliveOutput = {
-                    statusCode: res.statusCode,
-                    statusMessage: res.statusMessage
-                }; 
-                
-                resolve(output);
-                console.log("pingPromise end");
-                
-            }));
+
+        promise = new Promise<IKeepAliveOutput>((resolve, reject) => {
+
+          
+
+                http.get(url, (res) => {
+
+                    var output: IKeepAliveOutput = {
+                        statusCode: res.statusCode,
+                        statusMessage: res.statusMessage
+                    };
+
+                    resolve(output);
+                    this._log("pingPromise end");
+
+
+                }).on('error', (e) => {
+                    this._log(`Error: ${e.message}`);
+                    reject(e.message);
+                });
+    
+
+        });
+
 
         // http.get(
         //     `${tcBaseUrl}token`,
         //     { username: tcUser, password: tcPassword, auth: "Basic" },
         //     (_, resp, __) => resolve(resp.body)));
+
+
+        return promise;
     }
 
 
